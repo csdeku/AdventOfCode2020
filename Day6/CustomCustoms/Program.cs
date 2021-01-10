@@ -52,7 +52,8 @@ namespace CustomCustoms
                 {
                     totalUniqueQuestions += questionSet.Count;
                     questionSet.Clear();
-                } else
+                }
+                else
                 {
                     for (int j = 0; j < responseLines[i].Length; j++)
                     {
@@ -60,6 +61,32 @@ namespace CustomCustoms
                     }
                 }
             }
+
+            List<SortedSet<char>> individualQuestionSets = new List<SortedSet<char>>();
+            int sumOfTotalUnion = 0;
+            for (int i = 0; i < responseLines.Length; i++)
+            {
+                if (responseLines[i].Length == 0)
+                {
+                    SortedSet<char> totalUnion = individualQuestionSets[0];
+                    for (int j = 1; j < individualQuestionSets.Count; j++)
+                    {
+                        totalUnion.IntersectWith(individualQuestionSets[j]);
+                    }
+                    sumOfTotalUnion += totalUnion.Count;
+                    individualQuestionSets.Clear();
+                }
+                else
+                {
+                    SortedSet<char> setBuilder = new SortedSet<char>();
+                    for (int j = 0; j < responseLines[i].Length; j++)
+                    {
+                        setBuilder.Add(responseLines[i][j]);
+                    }
+                    individualQuestionSets.Add(setBuilder);
+                }
+            }
+
         }
     }
 }
